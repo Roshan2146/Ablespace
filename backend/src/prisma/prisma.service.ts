@@ -11,17 +11,18 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
     if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
       try {
         const tmpDb = '/tmp/dev.db';
-        const path1 = path.join(process.cwd(), 'prisma', 'dev.db');
-        const path2 = path.join(process.cwd(), 'backend', 'prisma', 'dev.db');
-        const path3 = path.join(__dirname, '..', '..', 'prisma', 'dev.db');
-        
-        let existingDb = '';
-        if (fs.existsSync(path1)) existingDb = path1;
-        else if (fs.existsSync(path2)) existingDb = path2;
-        else if (fs.existsSync(path3)) existingDb = path3;
+        const searchPaths = [
+          path.join(process.cwd(), 'backend', 'prisma', 'dev.db'),
+          path.join(process.cwd(), 'prisma', 'dev.db'),
+          path.join(__dirname, '..', '..', 'prisma', 'dev.db'),
+          path.join(__dirname, '..', 'prisma', 'dev.db'),
+        ];
+
+        const existingDb = searchPaths.find((p) => fs.existsSync(p));
 
         if (!fs.existsSync(tmpDb) && existingDb) {
           fs.copyFileSync(existingDb, tmpDb);
+          console.log(`Copied SQLite database from ${existingDb} to ${tmpDb}`);
         }
         if (fs.existsSync(tmpDb)) {
           dbUrl = 'file:/tmp/dev.db';
@@ -41,7 +42,11 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
   }
 
   async onModuleInit() {
-    await this.$connect();
+    try {
+      await this.$connect();
+    } catch (e) {
+      console.error('Prisma connection error:', e);
+    }
   }
 
   async onModuleDestroy() {
