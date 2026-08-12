@@ -1,5 +1,7 @@
 # AbleSpace Technical Assessment — Full-Stack App & Product Understanding
 
+> 🌐 **Live Demo**: [https://ablespace-na45.vercel.app](https://ablespace-na45.vercel.app)
+
 This repository contains the complete submission for the **AbleSpace Technical Assessment**, divided into two primary parts:
 1. **Part 1 (Full Stack)**: Task Management System (Next.js Frontend + NestJS & Prisma Backend).
 2. **Part 2 (Product Understanding)**: Analysis and UX/UI evaluation of the AbleSpace *Take Data (Caseload)* workflow.
@@ -17,6 +19,13 @@ AbleSpace Project
 └── Part-2/
     └── AbleSpace_Part2_Product_Understanding.pdf  # PDF document analyzing Take Data workflow
 ```
+
+---
+
+## 🌐 Live Application & API
+
+- **Live Frontend Web App**: [https://ablespace-na45.vercel.app](https://ablespace-na45.vercel.app)
+- **Live REST API Endpoint**: [https://ablespace-na45.vercel.app/api/tasks](https://ablespace-na45.vercel.app/api/tasks)
 
 ---
 
