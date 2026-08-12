@@ -36,6 +36,10 @@ export const createServer = async (expressInstance: any) => {
 let cachedServer: any;
 
 export default async function handler(req: any, res: any) {
+  // Normalize req.url to ensure /api prefix is present for NestJS routing
+  if (req.url && !req.url.startsWith('/api')) {
+    req.url = '/api' + (req.url.startsWith('/') ? '' : '/') + req.url;
+  }
   if (!cachedServer) {
     cachedServer = await createServer(server);
   }
