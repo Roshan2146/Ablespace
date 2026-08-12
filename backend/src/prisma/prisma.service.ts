@@ -6,15 +6,22 @@ import * as path from 'path';
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
   constructor() {
-    // Ensure SQLite database URL fallback or writable /tmp location on Vercel serverless
     let dbUrl = process.env.DATABASE_URL || 'file:./dev.db';
 
     if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
       try {
         const tmpDb = '/tmp/dev.db';
-        const projectDb = path.join(process.cwd(), 'prisma', 'dev.db');
-        if (!fs.existsSync(tmpDb) && fs.existsSync(projectDb)) {
-          fs.copyFileSync(projectDb, tmpDb);
+        const path1 = path.join(process.cwd(), 'prisma', 'dev.db');
+        const path2 = path.join(process.cwd(), 'backend', 'prisma', 'dev.db');
+        const path3 = path.join(__dirname, '..', '..', 'prisma', 'dev.db');
+        
+        let existingDb = '';
+        if (fs.existsSync(path1)) existingDb = path1;
+        else if (fs.existsSync(path2)) existingDb = path2;
+        else if (fs.existsSync(path3)) existingDb = path3;
+
+        if (!fs.existsSync(tmpDb) && existingDb) {
+          fs.copyFileSync(existingDb, tmpDb);
         }
         if (fs.existsSync(tmpDb)) {
           dbUrl = 'file:/tmp/dev.db';
