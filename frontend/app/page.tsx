@@ -32,7 +32,7 @@ export default function DashboardPage() {
       const data = await fetchTasks({ search: searchQuery });
       setTasks(data);
     } catch (err: any) {
-      setError('Could not connect to NestJS backend API. Ensure server is running on http://localhost:3001.');
+      setError('Could not connect to backend API server. Please check your backend connection.');
       console.error(err);
     } finally {
       setLoading(false);
